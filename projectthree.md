@@ -229,3 +229,78 @@ module.exports = router;`
 >`:qa`
 
 --- 
+---
+## MODELS
+
+### Since the app is going to make use of Mongodb which is a NoSQL database, we need to create a model.
+
+#### To create a Schema and a model, install mongoose into the Todo directory, using this command:
+>`npm install mongoose`
+
+![install mongoose](./images/install-mongoose.png)
+
+### Next, create a new folder named ***models***, using this command:
+>`mkdir models`
+
+### Change directory to models:
+>` cd models`
+
+### Inside the models folder, create a file and name it ***todo.js***, using this command:
+
+>` touch todo.js`
+
+![create a file in models dir](./images/create-dir-and-file.png)
+
+### Next, open the file created with `vim todo.js` command, then paste the code below in the file:
+
+>`const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+//create schema for todo
+const TodoSchema = new Schema({
+action: {
+type: String,
+required: [true, 'The todo text field is required']
+}
+})
+//create model for todo
+const Todo = mongoose.model('todo', TodoSchema);
+module.exports = Todo;`
+
+![vim todo.js](./images/vim-todojs.png)
+
+### open api.js file using `vim api.js` cammand, delete what's in the file using `:&d` command, and replace with the following code:
+
+>const express = require ('express');
+const router = express.Router();
+const Todo = require('../models/todo');
+
+>router.get('/todos', (req, res, next) => {
+
+>//this will return all the data, exposing only the id and action field to the client
+Todo.find({}, 'action')
+.then(data => res.json(data))
+.catch(next)
+});
+
+>router.post('/todos', (req, res, next) => {
+if(req.body.action){
+Todo.create(req.body)
+.then(data => res.json(data))
+.catch(next)
+}else {
+res.json({
+error: "The input field is empty"
+})
+}
+});
+
+>router.delete('/todos/:id', (req, res, next) => {
+Todo.findOneAndDelete({"_id": req.params.id})
+.then(data => res.json(data))
+.catch(next)
+})
+
+>module.exports = router;
+
+![paste new code in api.js file](./images/paste-in-apijs.png)
+
