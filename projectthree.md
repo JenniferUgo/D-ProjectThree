@@ -1,7 +1,7 @@
 # SIMPLE TO-DO APPLICATION ON MERN WEB STACK DOCUMENTATION
 
 ## We will implement a web solution based on MERN stack in AWS Cloud
-
+<br><br>
 ### **MERN** Web stack consists of following components:
 
 1. **M**ongoDB: A document-based, No-SQL database used to store application data in a form of documents.
@@ -29,7 +29,7 @@
 
  #### *This automatically connects to the instance when you click Enter*
  ![connected to instance](./images/connected-to-instance.png)
-
+<br><br>
  ## BACKEND CONFIGURATION
  ### First, we update ubuntu, using the command:
  >` sudo apt update`
@@ -67,7 +67,7 @@
 
 #### **Application Code Setup**
 
-### We create a ney directory for out To-Do project, using this command:
+### We create a new directory for out To-Do project, using this command:
 
 >`mkdir Todo`
 
@@ -76,7 +76,7 @@
 
 ![create to-do directory](./images/create-directory.png)
 
-### Next, we change current directory to the newly created one, usimg this command:
+### Next, we change current directory to the newly created one, using this command:
 
 >` cd Todo`
 
@@ -86,7 +86,7 @@
 
 >`npm init`
 
-#### *Click **Enter** several times to continue, then sele **yes** to complete the process*
+#### *Click **Enter** several times to continue, then select **yes** to complete the process*
 
 ![initialise the project](./images/initialise-project.png)
 
@@ -96,9 +96,9 @@
 
 ![verify package](./images/verify-package.png)
 
-### Next we install ExpresJs and create the Routes directory
+### Next we install ExpressJs and create the Routes directory
 
-__
+<br><br>
 ## INSTALL EXPRESSJS
 
 ### To use express, install it using npm, by running this commad:
@@ -183,7 +183,7 @@ console.log(`Server running on port ${port}`)
 
 ![welcome to express](./images/welcome-to-express.png)
 
--
+<br><br>
 ####             ***Routes***
 ### Our To-Do application should be able to do the following
 
@@ -238,6 +238,7 @@ module.exports = router;
 
 --- 
 ---
+<br><br>
 ## MODELS
 
 ### Since the app is going to make use of Mongodb which is a NoSQL database, we need to create a model.
@@ -322,7 +323,7 @@ module.exports = router;
 
 #### *We need a database where we will store our data. For this we will use  **mLab**.*
 
-#### We use MongoDB Database to store our data using mLab which provides Database as a service (DBaas) solution.
+#### We use MongoDB Database to store our data using mLab which provides Database as a service (DBaas) solution.<br><br>
 
 #### To continue, we sign up [here](https://www.mongodb.com/atlas-signup-from-mlab).
 
@@ -330,7 +331,7 @@ module.exports = router;
 
 #### Next, go to "Network access", select "Allow access from anywhere". This is not secure execpt for testing purposes.
 ![set ip](./images/set-up-ipaddress-mlab.png)
-##### *Change the time of deleting the entry from 6 Hours to 1 Week.*
+##### *Change the time of deleting the entry from 6 Hours to 1 Week.*<br><br>
 
 ### Create a MongoDB database and collection inside mLab by clicking on "database", click on "cluster0" (*I changed the name to MERN in the image below*) and then click on "collections" tab.
 
@@ -355,7 +356,7 @@ module.exports = router;
 
 ##### *Save and exit*
 
-### Next, we update the ***index.js*** to reflect the use of ***.env*** so that Node.js can connect to the database.
+### Next, we update the ***index.js*** to reflect the use of ***.env*** so that Node.js can connect to the database.<br><br>
 
 #### To do that we open the **index.js** file and delete the content using **esc**  `:%d` then click **Enter**.
 
@@ -403,7 +404,7 @@ console.log(`Server running on port ${port}`)
 
 ![update index.js file content](./images/update-indexjs-file-content.png)
 
-##### Save with **esc**, `:w` and `:qa`
+##### Save with **esc**, `:w` and `:qa`<br><br>
 
 ### It is more secure to use environment variables to store information so as to separate configuration and secret data from the application, instead of writing connection strings directly inside the index.js application file.
 
@@ -415,7 +416,7 @@ console.log(`Server running on port ${port}`)
 
 ### **Testing Backend Code without Frontend using RESTful API**
 
-### So far we have written backend part of our To-Do application, and configured a database, but we do not have a frontend UI yet. We need ReactJS code to achieve that. But during development, we will need a way to test our code using RESTfulL API. Therefore, we will need to make use of some API development client to test our code.
+### So far we have written backend part of our To-Do application, and configured a database, but we do not have a frontend UI yet. We need ReactJS code to achieve that. But during development, we will need a way to test our code using RESTfulL API. Therefore, we will need to make use of some API development client to test our code.<br><br>
 
 #### In this project, we will use Postman to test our API.
 
@@ -448,7 +449,7 @@ console.log(`Server running on port ${port}`)
 
 ![delete](./images/todo-task3.png)
 
-##### By now you have tested backend part of our To-Do application and have made sure that it supports all three operations we wanted:
+##### By now we have tested backend part of our To-Do application and have made sure that it supports all three operations we wanted:
 
 - Display a list of tasks – HTTP GET request
 - Add a new task to the list – HTTP POST request
@@ -458,3 +459,202 @@ We have successfully created our Backend, now let go create the Frontend.
 
 ---
 ---
+
+## FRONTEND CREATION
+
+### Since we are done with the functionality we want from our backend and API, it is time to create a user interface for a Web client (browser) to interact with the application via API. To start out with the frontend of the To-do app, we will use the ***create-react-app*** command to scaffold our app.
+
+#### We will create a new folder in the To-do directly, which is the same root as the backend code, using ths command:
+
+>`npx create-react-app client`
+
+![create react folder](./images/create-react.png)
+
+#### *Type ***y*** when you get the prompt, to complete the installation*
+![Like so](./images/install-react-package.png)
+
+##### *This will create a new folder in our **Todo** directory called **client**, where we will add all the react code.* <br><br>
+
+#### **Running a React App**
+
+#### Before testing the react app, there are some dependencies that need to be installed.
+
+1. Install **concurrently**. It is used to run more than one command simultaneously from the same terminal window. Run this command:
+>`npm install concurrently --save-dev`
+
+![install concurrently](./images/install-concurrently.png)
+
+2. Install **nodemon**. It is used to run and monitor the server. If there is any change in the server code, nodemon will restart it automatically and load the new changes. Run this command:
+>`npm install nodemon --save-dev`
+
+![install nodemon](./images/install-nodemon.png)
+
+3. In **Todo** folder open the **package.json** file, using this command:
+
+>`vim package.json`
+
+Then replace the 'scripts' section with the code below.
+
+```
+"scripts": {
+"start": "node index.js",
+"start-watch": "nodemon index.js",
+"dev": "concurrently \"npm run start-watch\" \"cd client && npm start\""
+}, 
+```
+Click **esc**, then,
+
+Save with:
+>`:w`
+
+Exit with:
+>`:qa`
+##### And click **Enter**
+<br><br>
+### Next,
+#### **Configure Proxy in package.json**
+<br>
+
+1. Change directory to **client**, with:
+
+>`cd client`
+
+2. Open the **package.json** file, with:
+
+>`vi package.json`
+
+3. Add the key value pair in the package.json file "proxy":
+
+>`"http://localhost:5000"`.
+
+![like so](./images/add-proxy-to-client.png)
+
+##### Save with:
+>`:w`
+
+Exit with:
+>`:qa`
+
+##### And click **Enter**
+
+#### *Adding No 3 makes it possible to access the application directly from the browser by simply calling the server url like http://localhost:5000 rather than always including the entire path like http://localhost:5000/api/todos*
+
+<br>
+
+### Next, ***cd*** back to ***Todo*** directory and run this command:
+
+>`npm run dev`
+
+![like so](./images/npm-run-dev.png)
+
+##### Your app should open and start running on localhost:3000
+
+#### **Important note:** In order to be able to access the application from the Internet you have to open TCP port 3000 on EC2 by adding a new Security Group rule.
+
+![like so](./images/TCport-3000.png)
+
+<br>
+
+#### **Creating your React Components**
+<br>
+
+#### One of the advantages of react is that it makes use of components, which are reusable and also makes code modular. For our Todo app, there will be two stateful components and one stateless component.
+<br>
+
+### On the **Todo** directory, run this command:
+
+>`cd client`
+
+### Move to the **src** directory with this command:
+
+>`cd src`
+
+### Inside our **src** folder, we create another folder called **components**, using this command:
+
+>`mkdir components`
+
+### Move into the **components** directory with with this command:
+
+>` cd components`
+
+### Inside **components** directory create three files **Input.js**, **ListTodo.js** and **Todo.js** using this command:
+
+>`touch Input.js ListTodo.js Todo.js`
+
+![like so](./images/create-components-files.png)
+
+### Then, Open **Input.js** file with is command:
+
+>`vi Input.js`
+
+### Copy and paste the following:
+
+```
+import React, { Component } from 'react';
+import axios from 'axios';
+
+class Input extends Component {
+
+state = {
+action: ""
+}
+
+addTodo = () => {
+const task = {action: this.state.action}
+
+    if(task.action && task.action.length > 0){
+      axios.post('/api/todos', task)
+        .then(res => {
+          if(res.data){
+            this.props.getTodos();
+            this.setState({action: ""})
+          }
+        })
+        .catch(err => console.log(err))
+    }else {
+      console.log('input field required')
+    }
+
+}
+
+handleChange = (e) => {
+this.setState({
+action: e.target.value
+})
+}
+
+render() {
+let { action } = this.state;
+return (
+<div>
+<input type="text" onChange={this.handleChange} value={action} />
+<button onClick={this.addTodo}>add todo</button>
+</div>
+)
+}
+}
+
+export default Input
+```
+
+![like so](./images/paste-in-inputjs.png)
+
+##### Save with:
+>`:w`
+
+Exit with:
+>`:qa`
+
+##### And click **Enter**
+<br>
+
+#### To make use of Axios, which is a Promise based HTTP client for the browser and node.js.
+
+#### We ***cd*** into the **client** directory and run this command:
+
+>`npm install axios`
+
+![like so](./images/installing-axios.png)
+
+
+
