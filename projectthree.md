@@ -129,22 +129,28 @@ __
 
 #### And paste this:
 
-
->`const express = require('express');
+```
+const express = require('express');
 require('dotenv').config();
+
 const app = express();
+
 const port = process.env.PORT || 5000;
+
 app.use((req, res, next) => {
 res.header("Access-Control-Allow-Origin", "\*");
 res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 next();
 });
+
 app.use((req, res, next) => {
 res.send('Welcome to Express');
 });
+
 app.listen(port, () => {
 console.log(`Server running on port ${port}`)
-});`
+});
+```
 
 ![paste in index.js file](./images/paste-in-indexjs-file.png)
 
@@ -201,13 +207,14 @@ console.log(`Server running on port ${port}`)
 
 ![create api.js](./images/create-routes-plus-apijs.png)
 
-### Open the api'js file, using:
+### Open the api.js file, using:
 
 >` vim api.Js`
 
 ### And paste this:
 
->`const express = require ('express');
+```
+`const express = require ('express');
 const router = express.Router();
 router.get('/todos', (req, res, next) => {
 });
@@ -215,7 +222,8 @@ router.post('/todos', (req, res, next) => {
 });
 router.delete('/todos/:id', (req, res, next) => {
 })
-module.exports = router;`
+module.exports = router;
+```
 
 ![insert in api.js](./images/insert-in-apijs.png)
 
@@ -270,19 +278,20 @@ module.exports = Todo;`
 
 ### open api.js file using `vim api.js` cammand, delete what's in the file using `:&d` command, and replace with the following code:
 
->const express = require ('express');
+```
+const express = require ('express');
 const router = express.Router();
 const Todo = require('../models/todo');
 
->router.get('/todos', (req, res, next) => {
+router.get('/todos', (req, res, next) => {
 
->//this will return all the data, exposing only the id and action field to the client
+//this will return all the data, exposing only the id and action field to the client
 Todo.find({}, 'action')
 .then(data => res.json(data))
 .catch(next)
 });
 
->router.post('/todos', (req, res, next) => {
+router.post('/todos', (req, res, next) => {
 if(req.body.action){
 Todo.create(req.body)
 .then(data => res.json(data))
@@ -294,13 +303,158 @@ error: "The input field is empty"
 }
 });
 
->router.delete('/todos/:id', (req, res, next) => {
+router.delete('/todos/:id', (req, res, next) => {
 Todo.findOneAndDelete({"_id": req.params.id})
 .then(data => res.json(data))
 .catch(next)
 })
 
->module.exports = router;
+module.exports = router;
+```
 
 ![paste new code in api.js file](./images/paste-in-apijs.png)
 
+#### Save and exit
+---
+---
+
+## MONGODB DATABASE
+
+#### *We need a database where we will store our data. For this we will use  **mLab**.*
+
+#### We use MongoDB Database to store our data using mLab which provides Database as a service (DBaas) solution.
+
+#### To continue, we sign up [here](https://www.mongodb.com/atlas-signup-from-mlab).
+
+### Follow the sign up process, select AWS as the cloud provider, and choose a region near you.
+
+#### Next, go to "Network access", select "Allow access from anywhere". This is not secure execpt for testing purposes.
+![set ip](./images/set-up-ipaddress-mlab.png)
+##### *Change the time of deleting the entry from 6 Hours to 1 Week.*
+
+### Create a MongoDB database and collection inside mLab by clicking on "database", click on "cluster0" (*I changed the name to MERN in the image below*) and then click on "collections" tab.
+
+![MongoDB database and collection](./images/cluster-collection.png)
+
+### In the ***index.js*** file, we specified ***process.env*** to access environment variables, but we have not yet created this file. So we need to do that now.
+
+### Create a file in your Todo directory and name it ***.env*** using this command:
+>`touch .env`
+
+#### Then, open the file with:
+>`vi .env`
+![ create .env file](./images/create-dotenv-file.png)
+
+### Add the connection string to access the database in it, just as below:
+
+>`DB = 'mongodb+srv://<username>:<password>@<network-address>/<dbname>?retryWrites=true&w=majority'`
+
+![connect to mongoDB](./images/connect-to-cluster.png)
+
+![C](./images/connect-to-cluster2.png)
+
+##### *Save and exit*
+
+### Next, we update the ***index.js*** to reflect the use of ***.env*** so that Node.js can connect to the database.
+
+#### To do that we open the **index.js** file and delete the content using **esc**  `:%d` then click **Enter**.
+
+#### We then replace then content with the following codes:
+
+``` 
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const routes = require('./routes/api');
+const path = require('path');
+require('dotenv').config();
+
+const app = express();
+
+const port = process.env.PORT || 5000;
+
+//connect to the database
+mongoose.connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true })
+.then(() => console.log(`Database connected successfully`))
+.catch(err => console.log(err));
+
+//since mongoose promise is depreciated, we overide it with node's promise
+mongoose.Promise = global.Promise;
+
+app.use((req, res, next) => {
+res.header("Access-Control-Allow-Origin", "\*");
+res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+next();
+});
+
+app.use(bodyParser.json());
+
+app.use('/api', routes);
+
+app.use((err, req, res, next) => {
+console.log(err);
+next();
+});
+
+app.listen(port, () => {
+console.log(`Server running on port ${port}`)
+}); 
+```
+
+![update index.js file content](./images/update-indexjs-file-content.png)
+
+##### Save with **esc**, `:w` and `:qa`
+
+### It is more secure to use environment variables to store information so as to separate configuration and secret data from the application, instead of writing connection strings directly inside the index.js application file.
+
+#### We start our server using this command:
+
+>`node index.js`
+
+![start server](./images/start-node-server.png)
+
+### **Testing Backend Code without Frontend using RESTful API**
+
+### So far we have written backend part of our To-Do application, and configured a database, but we do not have a frontend UI yet. We need ReactJS code to achieve that. But during development, we will need a way to test our code using RESTfulL API. Therefore, we will need to make use of some API development client to test our code.
+
+#### In this project, we will use Postman to test our API.
+
+#### We will test all the API endpoints and make sure they are working. For the endpoints that require body, you should send JSON back with the necessary fields since it’s what we setup in our code.
+
+### Now open your Postman, create a **POST** request to your API:
+>`http://<PublicIP>:5000/api/todos`
+
+#### This request sends a new task to our To-Do list so the application could store it in the database.
+
+#### *Make sure to set the header **"content-type"** and **"application/json"***
+
+![like so](./images/set-contenttype-header.png)
+
+### Next, click on ***body*** and select ***raw***. In the field below, write a command that displays as a response on then next field with an id.
+
+![like so](./images/todo-task1.png)
+
+### Next, create a **GET** request to your API:
+
+>`http://<PublicIP>:5000/api/todos`
+
+#### This request retrieves all existing records from our To-do application. The backend requests these records from the database and sends it us back as a response to the GET request.
+
+![Get](./images/todo-task2.png)
+
+### Then, create a **DELETE** request o delete a task from out To-Do list.
+
+#### To delete a task – you need to send its ID as a part of DELETE request.
+
+![delete](./images/todo-task3.png)
+
+##### By now you have tested backend part of our To-Do application and have made sure that it supports all three operations we wanted:
+
+- Display a list of tasks – HTTP GET request
+- Add a new task to the list – HTTP POST request
+- Delete an existing task from the list – HTTP DELETE request
+
+We have successfully created our Backend, now let go create the Frontend.
+
+---
+---
