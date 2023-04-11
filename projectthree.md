@@ -1,4 +1,4 @@
-# SIMPLE TO-DO APPLICATION ON MERN WEB STACK DOCUMENTATION
+# A TO-DO APPLICATION ON MERN WEB STACK DOCUMENTATION
 
 ## We will implement a web solution based on MERN stack in AWS Cloud
 <br><br>
